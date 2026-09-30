@@ -7,7 +7,7 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Kelola semua produk digital dan aplikasi Anda di sini.</p>
     </div>
     <a href="{{ route('admin.products.create') }}" class="bg-brand-primary hover:bg-brand-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2 w-max">
-        <i class="fa-solid fa-plus"></i> Tambah Produk Baru
+        <i class="fa-solid fa-plus"></i> Produk Baru
     </a>
 </div>
 
