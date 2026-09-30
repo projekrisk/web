@@ -6,10 +6,27 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    // Fungsi bantuan agar 100% masuk ke public_html di Shared Hosting
+    private function getUploadPath()
+    {
+        // Mengambil lokasi asli dari domain (biasanya berujung di public_html)
+        $documentRoot = isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT']) 
+                        ? rtrim($_SERVER['DOCUMENT_ROOT'], '/') 
+                        : public_path();
+        
+        $destinationPath =$documentRoot . '/uploads';
+
+        // Buat foldernya otomatis jika belum ada
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        return $destinationPath;
+    }
+
     public function index(Request $request)
     {
         $query = Product::query();
@@ -49,30 +66,24 @@ class ProductController extends Controller
         ]);
 
         $data =$request->except(['featured_image', 'gallery', 'download_file']);
+        $destinationPath =$this->getUploadPath();
 
-        // 1. Upload Featured Image (Foto Utama) menggunakan disk 'public_uploads'
-        if ($request->hasFile('featured_image')) {
-            $file =$request->file('featured_image');
-            $fileName = time() . '_featured_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-            // Simpan ke disk public_uploads (langsung ke public/uploads)
-            Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+        // 1. Upload Featured Image
+        if ($request->hasFile('featured_image')) {$file = $request->file('featured_image');$fileName = time() . '_featured_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
             $data['featured_image'] =$fileName;
         }
 
-        // 2. Upload Gallery (Multiple Foto)
+        // 2. Upload Gallery
         if ($request->hasFile('gallery')) {$galleryImages = [];
-            foreach ($request->file('gallery') as$key => $file) {$fileName = time() . '_gallery_' . $key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+            foreach ($request->file('gallery') as $key =>$file) {
+                $fileName = time() . '_gallery_' .$key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
                 $galleryImages[] =$fileName;
             }
             $data['gallery'] =$galleryImages;
         }
 
-        // 3. Upload File Download (ZIP/RAR)
-        if ($request->download_type == 'file' &&$request->hasFile('download_file')) {
-            $file =$request->file('download_file');
-            $fileName = time() . '_download_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+        // 3. Upload Download File
+        if ($request->download_type == 'file' && $request->hasFile('download_file')) {$file = $request->file('download_file');$fileName = time() . '_download_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
             $data['download_file'] =$fileName;
         }
 
@@ -107,36 +118,31 @@ class ProductController extends Controller
         ]);
 
         $data =$request->except(['featured_image', 'gallery', 'download_file', 'delete_featured_image', 'delete_gallery']);
+        $destinationPath =$this->getUploadPath();
 
-        // ==========================================
-        // 1. LOGIKA HAPUS / UPDATE FOTO UTAMA
-        // ==========================================
+        // 1. Logika Hapus/Update Foto Utama
         if ($request->input('delete_featured_image') == '1') {
-            if ($product->featured_image && Storage::disk('public_uploads')->exists($product->featured_image)) {
-                Storage::disk('public_uploads')->delete($product->featured_image);
+            if ($product->featured_image && file_exists($destinationPath . '/' .$product->featured_image)) {
+                unlink($destinationPath . '/' .$product->featured_image);
             }
             $data['featured_image'] = null; 
         }
 
         if ($request->hasFile('featured_image')) {
-            if ($product->featured_image && Storage::disk('public_uploads')->exists($product->featured_image)) {
-                Storage::disk('public_uploads')->delete($product->featured_image);
+            if ($product->featured_image && file_exists($destinationPath . '/' .$product->featured_image)) {
+                unlink($destinationPath . '/' .$product->featured_image);
             }
-            $file =$request->file('featured_image');
-            $fileName = time() . '_featured_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+            $file = $request->file('featured_image');$fileName = time() . '_featured_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
             $data['featured_image'] =$fileName;
         }
 
-        // ==========================================
-        // 2. LOGIKA HAPUS / UPDATE GALERI FOTO
-        // ==========================================
+        // 2. Logika Hapus/Update Galeri
         $currentGallery = is_array($product->gallery) ?$product->gallery : [];
 
         if ($request->has('delete_gallery') && is_array($request->delete_gallery)) {
             foreach ($request->delete_gallery as$fileToDelete) {
-                if (Storage::disk('public_uploads')->exists($fileToDelete)) {
-                    Storage::disk('public_uploads')->delete($fileToDelete);
+                if (file_exists($destinationPath . '/' .$fileToDelete)) {
+                    unlink($destinationPath . '/' .$fileToDelete);
                 }
                 $currentGallery = array_filter($currentGallery, function($img) use ($fileToDelete) {
                     return $img !==$fileToDelete;
@@ -146,30 +152,26 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('gallery')) {
-            foreach ($request->file('gallery') as$key => $file) {$fileName = time() . '_gallery_' . $key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-                Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+            foreach ($request->file('gallery') as $key =>$file) {
+                $fileName = time() . '_gallery_' .$key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
                 $currentGallery[] =$fileName; 
             }
         }
         $data['gallery'] =$currentGallery;
 
 
-        // ==========================================
-        // 3. LOGIKA FILE DOWNLOAD
-        // ==========================================
+        // 3. Logika Update File Download
         if ($request->download_type == 'file' &&$request->hasFile('download_file')) {
-            if ($product->download_file && Storage::disk('public_uploads')->exists($product->download_file)) {
-                Storage::disk('public_uploads')->delete($product->download_file);
+            if ($product->download_file && file_exists($destinationPath . '/' .$product->download_file)) {
+                unlink($destinationPath . '/' .$product->download_file);
             }
-            $file =$request->file('download_file');
-            $fileName = time() . '_download_' . Str::random(5) . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public_uploads')->put($fileName, file_get_contents($file));
+            $file = $request->file('download_file');$fileName = time() . '_download_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
             $data['download_file'] =$fileName;
         }
 
         if ($request->download_type == 'link' &&$product->download_type == 'file') {
-            if ($product->download_file && Storage::disk('public_uploads')->exists($product->download_file)) {
-                Storage::disk('public_uploads')->delete($product->download_file);
+            if ($product->download_file && file_exists($destinationPath . '/' .$product->download_file)) {
+                unlink($destinationPath . '/' .$product->download_file);
             }
             $data['download_file'] = null;
         }
@@ -184,20 +186,22 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->featured_image && Storage::disk('public_uploads')->exists($product->featured_image)) {
-            Storage::disk('public_uploads')->delete($product->featured_image);
+        $destinationPath =$this->getUploadPath();
+
+        if ($product->featured_image && file_exists($destinationPath . '/' .$product->featured_image)) {
+            unlink($destinationPath . '/' .$product->featured_image);
         }
 
         if ($product->gallery && is_array($product->gallery)) {
             foreach ($product->gallery as$oldImg) {
-                if (Storage::disk('public_uploads')->exists($oldImg)) {
-                    Storage::disk('public_uploads')->delete($oldImg);
+                if (file_exists($destinationPath . '/' .$oldImg)) {
+                    unlink($destinationPath . '/' .$oldImg);
                 }
             }
         }
 
-        if ($product->download_type == 'file' && $product->download_file && Storage::disk('public_uploads')->exists($product->download_file)) {
-            Storage::disk('public_uploads')->delete($product->download_file);
+        if ($product->download_type == 'file' &&$product->download_file && file_exists($destinationPath . '/' .$product->download_file)) {
+            unlink($destinationPath . '/' .$product->download_file);
         }
 
         $product->delete();
