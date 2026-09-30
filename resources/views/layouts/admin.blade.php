@@ -107,8 +107,13 @@
 
             <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2.5 {{ request()->routeIs('admin.users.*') ? 'bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white' }} rounded-lg font-medium transition-colors">
                 <i class="fa-solid fa-users w-5 text-center"></i> Pengguna
-            </a>           
+            </a>          
             
+            <div class="border-t border-gray-200 dark:border-gray-800 my-2 pt-2"></div>
+            
+            <button type="button" onclick="openPasswordModal()" class="w-full flex items-center gap-3 px-3 py-2.5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white rounded-lg font-medium transition-colors text-left">
+                <i class="fa-solid fa-key w-5 text-center"></i> Ganti Password
+            </button>
         </nav>
         
         <div class="p-4 border-t border-gray-200 dark:border-gray-800">
@@ -157,6 +162,51 @@
         </main>
     </div>
 
+    <div id="password-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
+        <div id="password-overlay" class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+        <div id="password-content" class="relative bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
+            
+            <div class="p-5 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center bg-gray-50 dark:bg-slate-800/50">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Ganti Password</h3>
+                <button type="button" onclick="closePasswordModal()" class="text-gray-400 hover:text-gray-900 dark:hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <form action="{{ route('password.update') }}" method="POST" class="space-y-4">
+                    @csrf
+                    @method('put')
+
+                    <div>
+                        <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password Saat Ini</label>
+                        <input type="password" id="current_password" name="current_password" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                        @if($errors->updatePassword->has('current_password'))
+                            <p class="text-red-500 text-xs mt-1">{{ $errors->updatePassword->first('current_password') }}</p>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password Baru</label>
+                        <input type="password" id="password" name="password" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                        @if($errors->updatePassword->has('password'))
+                            <p class="text-red-500 text-xs mt-1">{{ $errors->updatePassword->first('password') }}</p>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konfirmasi Password Baru</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-primary hover:bg-brand-primaryHover text-white font-bold py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20 mt-2 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-save"></i> Perbarui Password
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         function showCustomToast(type, title, message) {
             const container = document.getElementById('toast-container');
@@ -201,9 +251,44 @@
 
         @if(session('success')) showCustomToast('success', 'Berhasil!', '{{ session("success") }}'); @endif
         @if(session('error')) showCustomToast('error', 'Gagal!', '{{ session("error") }}'); @endif
+        
+        @if(session('status') === 'password-updated')
+            document.addEventListener('DOMContentLoaded', function() {
+                showCustomToast('success', 'Password Diperbarui!', 'Password akun Anda berhasil diganti.'); 
+            });
+        @endif
     </script>
 
     <script>
+        const passModal = document.getElementById('password-modal');
+        const passOverlay = document.getElementById('password-overlay');
+        const passContent = document.getElementById('password-content');
+
+        function openPasswordModal() {
+            passModal.classList.remove('hidden'); 
+            passModal.classList.add('flex');
+            void passModal.offsetWidth;
+            passOverlay.classList.remove('opacity-0');
+            passContent.classList.remove('scale-95', 'opacity-0');
+        }
+
+        function closePasswordModal() {
+            passOverlay.classList.add('opacity-0');
+            passContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { 
+                passModal.classList.add('hidden'); 
+                passModal.classList.remove('flex'); 
+            }, 300);
+        }
+
+        if(passOverlay) passOverlay.addEventListener('click', closePasswordModal);
+
+        @if($errors->updatePassword->any())
+            document.addEventListener('DOMContentLoaded', function() {
+                openPasswordModal();
+            });
+        @endif
+
         document.addEventListener('DOMContentLoaded', () => {
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeToggleIcon = document.getElementById('theme-toggle-icon');

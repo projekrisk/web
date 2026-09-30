@@ -45,7 +45,7 @@
 
                 <div class="space-y-4 max-w-sm mx-auto">
                     @php
-                        $waNumber = env('WHATSAPP_ADMIN_NUMBER', '6281234567890');
+                        $waNumber = env('WHATSAPP_ADMIN_NUMBER', '6281311665601');
                         $waLink = "https://wa.me/" . $waNumber . "?text=Halo%20Tim%20Projekrisk,%20saya%20butuh%20bantuan%20mengenai...";
                     @endphp
                     
@@ -67,7 +67,7 @@
     </main>
 
     <footer class="bg-gray-900 border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
-        <div class="max-w-[1100px] mx-auto px-4">&copy; {{ date('Y') }} Projekrisk. Hak Cipta Dilindungi.</div>
+        <div class="max-w-[1100px] mx-auto px-4">&copy; {{ date('Y') }} Projekrisk.</div>
     </footer>
 
     <script>
