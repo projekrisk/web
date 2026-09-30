@@ -30,6 +30,7 @@
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
+            
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Informasi Dasar</h2>
                 
@@ -168,7 +169,7 @@
                         @endif
 
                         <div class="relative">
-                            <input type="file" id="gallery" name="gallery[]" multiple accept="image/*" onchange="toggleClearBtn('gallery', 'clear_gallery_btn')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer">
+                            <input type="file" id="gallery" name="gallery[]" multiple accept="image/*" onchange="toggleClearBtn('gallery', 'clear_gallery_btn')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 dark:file:bg-slate-700 dark:file:text-white cursor-pointer">
                             <button type="button" id="clear_gallery_btn" onclick="clearFileInput('gallery', 'clear_gallery_btn')" class="hidden absolute right-2 top-1.5 text-gray-400 hover:text-red-500 bg-white dark:bg-slate-800 p-1 rounded-md"><i class="fa-solid fa-xmark"></i> Batal</button>
                         </div>
                         <p class="text-[11px] text-gray-500 mt-1 text-orange-600 dark:text-orange-400">Peringatan: Mengunggah galeri baru akan menimpa seluruh galeri lama.</p>
@@ -253,8 +254,7 @@
 
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    // Konfigurasi Modal Konfirmasi Hapus Gambar
-    let deleteAction = null; // Menyimpan fungsi mana yang akan dieksekusi
+    let deleteAction = null; 
 
     function openDeleteModal(actionCallback) {
         deleteAction = actionCallback;
@@ -263,7 +263,7 @@
         const content = document.getElementById('delete-photo-content');
 
         modal.classList.remove('hidden'); modal.classList.add('flex');
-        void modal.offsetWidth; // trigger reflow
+        void modal.offsetWidth; 
         overlay.classList.remove('opacity-0');
         content.classList.remove('scale-95', 'opacity-0');
     }
@@ -288,7 +288,6 @@
 
     document.getElementById('delete-photo-overlay').addEventListener('click', closeDeleteModal);
 
-    // Fungsi Utama Penghapusan Gambar (Dipanggil via Modal)
     function removeFeaturedImage() {
         openDeleteModal(function() {
             document.getElementById('featured-image-preview').style.display = 'none';
@@ -300,7 +299,6 @@
         openDeleteModal(function() {
             document.getElementById(elementId).style.display = 'none';
             
-            // Tambahkan input hidden untuk memberi tahu Controller bahwa file ini dihapus
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'delete_gallery[]';
@@ -309,7 +307,6 @@
         });
     }
 
-    // Fungsi Pembantu Form Lainnya
     function toggleClearBtn(inputId, btnId) {
         const input = document.getElementById(inputId);
         const btn = document.getElementById(btnId);
