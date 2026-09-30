@@ -48,9 +48,7 @@ class ProductController extends Controller
             'download_file' => 'nullable|file|mimes:zip,rar,pdf,doc,docx|max:51200|required_if:download_type,file',
         ]);
 
-        $data =$request->except(['featured_image', 'gallery', 'download_file']);
-
-        $destinationPath = public_path('uploads');
+        $data = $request->except(['featured_image', 'gallery', 'download_file']);$destinationPath = public_path('uploads');
 
         if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
@@ -102,9 +100,23 @@ class ProductController extends Controller
             'download_file' => 'nullable|file|mimes:zip,rar,pdf,doc,docx|max:51200',
         ]);
 
-        $data = $request->except(['featured_image', 'gallery', 'download_file']);$destinationPath = public_path('uploads');
+        // Tangkap data dan hapus elemen array yg tidak langsung masuk ke DB
+        $data = $request->except(['featured_image', 'gallery', 'download_file', 'delete_featured_image', 'delete_gallery']);$destinationPath = public_path('uploads');
 
+        // ==========================================
+        // 1. LOGIKA HAPUS / UPDATE FOTO UTAMA
+        // ==========================================
+        // Jika ada instruksi hapus foto utama DARI TOMBOL TONG SAMPAH
+        if ($request->input('delete_featured_image') == '1') {
+            if ($product->featured_image && File::exists($destinationPath . '/' .$product->featured_image)) {
+                File::delete($destinationPath . '/' .$product->featured_image);
+            }
+            $data['featured_image'] = null; // Kosongkan field di DB
+        }
+
+        // Jika user mengupload foto utama yang baru
         if ($request->hasFile('featured_image')) {
+            // Pastikan hapus foto lama dulu
             if ($product->featured_image && File::exists($destinationPath . '/' .$product->featured_image)) {
                 File::delete($destinationPath . '/' .$product->featured_image);
             }
@@ -112,23 +124,51 @@ class ProductController extends Controller
             $data['featured_image'] =$fileName;
         }
 
-        if ($request->hasFile('gallery')) {
-            if ($product->gallery && is_array($product->gallery)) {
-                foreach ($product->gallery as$oldImg) {
-                    if (File::exists($destinationPath . '/' .$oldImg)) {
-                        File::delete($destinationPath . '/' .$oldImg);
-                    }
-                }
-            }
+        // ==========================================
+        // 2. LOGIKA HAPUS / UPDATE GALERI FOTO
+        // ==========================================
+        $currentGallery = is_array($product->gallery) ?$product->gallery : [];
 
-            $galleryImages = [];
-            foreach ($request->file('gallery') as $key =>$file) {
-                $fileName = time() . '_gallery_' .$key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
-                $galleryImages[] =$fileName;
+        // Jika ada instruksi hapus gambar galeri spesifik DARI TONG SAMPAH
+        if ($request->has('delete_gallery') && is_array($request->delete_gallery)) {
+            foreach ($request->delete_gallery as$fileToDelete) {
+                // Hapus file fisik
+                if (File::exists($destinationPath . '/' .$fileToDelete)) {
+                    File::delete($destinationPath . '/' .$fileToDelete);
+                }
+                // Hapus file dari array currentGallery
+                $currentGallery = array_filter($currentGallery, function($img) use ($fileToDelete) {
+                    return $img !==$fileToDelete;
+                });
             }
-            $data['gallery'] =$galleryImages;
+            // Susun ulang index array
+            $currentGallery = array_values($currentGallery);
         }
 
+        // Jika ada upload gambar galeri baru (akan MENGGABUNGKAN yang lama dan baru)
+        if ($request->hasFile('gallery')) {
+            // Uncomment blok di bawah ini JIKA Anda ingin upload baru MENIMPA SEMUA galeri lama
+            /*
+            foreach ($currentGallery as$oldImg) {
+                if (File::exists($destinationPath . '/' .$oldImg)) {
+                    File::delete($destinationPath . '/' .$oldImg);
+                }
+            }
+            $currentGallery = []; 
+            */
+
+            foreach ($request->file('gallery') as $key =>$file) {
+                $fileName = time() . '_gallery_' .$key . '_' . Str::random(5) . '.' . $file->getClientOriginalExtension();$file->move($destinationPath,$fileName);
+                $currentGallery[] =$fileName; // Gabungkan dengan galeri yang tersisa
+            }
+        }
+        // Simpan array galeri akhir ke data (baik jika ada perubahan maupun tidak)
+        $data['gallery'] =$currentGallery;
+
+
+        // ==========================================
+        // 3. LOGIKA FILE DOWNLOAD
+        // ==========================================
         if ($request->download_type == 'file' &&$request->hasFile('download_file')) {
             if ($product->download_file && File::exists($destinationPath . '/' .$product->download_file)) {
                 File::delete($destinationPath . '/' .$product->download_file);
@@ -144,7 +184,7 @@ class ProductController extends Controller
             $data['download_file'] = null;
         }
 
-        if ($request->download_type == 'file' && $product->download_type == 'link') {$data['download_link'] = null; // Kosongkan database
+        if ($request->download_type == 'file' && $product->download_type == 'link') {$data['download_link'] = null;
         }
 
         $product->update($data);
