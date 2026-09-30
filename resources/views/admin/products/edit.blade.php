@@ -17,7 +17,7 @@
         <p class="font-medium text-red-800 dark:text-red-300">Terdapat kesalahan pada input Anda:</p>
     </div>
     <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400">
-        @foreach ($errors->all() as $error)
+        @foreach ($errors->all() as$error)
             <li>{{ $error }}</li>
         @endforeach
     </ul>
@@ -56,9 +56,9 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3">
-                            @forelse($categories as $category)
+                            @forelse($categories as$category)
                             <label class="cursor-pointer relative">
-                                <input type="radio" name="category" value="{{ $category->name }}" class="peer sr-only" required {{ old('category', $product->category) == $category->name ? 'checked' : '' }}>
+                                <input type="radio" name="category" value="{{ $category->name }}" class="peer sr-only" required {{ old('category', $product->category) ==$category->name ? 'checked' : '' }}>
                                 <div class="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-gray-100 peer-checked:border-brand-primary peer-checked:bg-blue-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:peer-checked:bg-brand-primary/20 dark:peer-checked:border-brand-primary transition-all flex items-center justify-center gap-2">
                                     <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $category->name }}</span>
                                     <i class="fa-solid fa-circle-check text-brand-primary text-xs hidden peer-checked:block"></i>
@@ -111,7 +111,7 @@
                 </div>
 
                 <div id="file_input_container" class="hidden">
-                    @if($product->download_type == 'file' && $product->download_file)
+                    @if($product->download_type == 'file' &&$product->download_file)
                         <div class="mb-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center justify-between text-sm">
                             <span class="text-green-700 dark:text-green-400 font-medium truncate pr-2"><i class="fa-solid fa-file-zipper mr-1"></i> File tersimpan</span>
                         </div>
@@ -139,11 +139,39 @@
                             </div>
                             <input type="hidden" name="delete_featured_image" id="delete_featured_image" value="0">
                         @endif
+                        <div class="relative mt-2">
+                            <input type="file" id="featured_image" name="featured_image" accept="image/*" onchange="toggleClearBtn('featured_image', 'clear_featured_btn')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-brand-primary hover:file:bg-blue-100 dark:file:bg-slate-700 dark:file:text-white dark:hover:file:bg-slate-600 cursor-pointer">
+                            <button type="button" id="clear_featured_btn" onclick="clearFileInput('featured_image', 'clear_featured_btn')" class="hidden absolute right-2 top-1.5 text-gray-400 hover:text-red-500 bg-white dark:bg-slate-800 p-1 rounded-md text-sm"><i class="fa-solid fa-xmark"></i> Batal</button>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-100 dark:border-slate-700">
+                    
+                    <div>
+                        <label for="gallery" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Galeri Tambahan</label>
+                        
+                        <!-- Penampung Input untuk foto galeri yang akan dihapus -->
+                        <div id="deleted-gallery-inputs"></div>
+
+                        <!-- Menampilkan Foto Galeri Lama Jika Ada -->
+                        @if($product->gallery && is_array($product->gallery) && count($product->gallery) > 0)
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                @foreach($product->gallery as $index =>$img)
+                                    <div class="relative w-full aspect-square group" id="gallery-preview-{{ $index }}">
+                                        <img src="{{ asset('uploads/' . $img) }}" class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-slate-700">
+                                        <button type="button" onclick="removeGalleryImage('{{ $img }}', 'gallery-preview-{{$index }}')" class="absolute top-1 right-1 bg-red-500/90 hover:bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus dari Galeri">
+                                            <i class="fa-solid fa-xmark text-xs"></i>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                         <div class="relative">
                             <input type="file" id="gallery" name="gallery[]" multiple accept="image/*" onchange="toggleClearBtn('gallery', 'clear_gallery_btn')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer">
                             <button type="button" id="clear_gallery_btn" onclick="clearFileInput('gallery', 'clear_gallery_btn')" class="hidden absolute right-2 top-1.5 text-gray-400 hover:text-red-500 bg-white dark:bg-slate-800 p-1 rounded-md"><i class="fa-solid fa-xmark"></i> Batal</button>
                         </div>
-                        <p class="text-[11px] text-gray-500 mt-1">Upload gambar tambahan (bisa pilih lebih dari satu).</p>
+                        <p class="text-[11px] text-gray-500 mt-1 text-orange-600 dark:text-orange-400">Peringatan: Mengunggah galeri baru akan menimpa seluruh galeri lama.</p>
                     </div>
                 </div>
             </div>
@@ -202,30 +230,90 @@
     </div>
 </form>
 
+<!-- Modal Hapus Foto -->
+<div id="delete-photo-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
+    <div id="delete-photo-overlay" class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+    <div id="delete-photo-content" class="relative bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
+        <div class="w-16 h-16 mx-auto bg-red-100 dark:bg-red-500/20 text-brand-danger rounded-full flex items-center justify-center text-3xl mb-4">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Hapus Foto?</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Foto akan dihapus dari tampilan. Anda harus mengklik <strong>Perbarui Produk</strong> untuk menyimpannya ke database secara permanen.</p>
+        
+        <div class="flex gap-3">
+            <button type="button" onclick="closeDeleteModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-900 dark:text-white font-medium py-2.5 rounded-lg transition-colors">
+                Batal
+            </button>
+            <button type="button" id="confirm-delete-btn" class="flex-1 bg-brand-danger hover:bg-red-600 text-white font-medium py-2.5 rounded-lg transition-colors">
+                Ya, Hapus
+            </button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
+    // Konfigurasi Modal Konfirmasi Hapus Gambar
+    let deleteAction = null; // Menyimpan fungsi mana yang akan dieksekusi
+
+    function openDeleteModal(actionCallback) {
+        deleteAction = actionCallback;
+        const modal = document.getElementById('delete-photo-modal');
+        const overlay = document.getElementById('delete-photo-overlay');
+        const content = document.getElementById('delete-photo-content');
+
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        void modal.offsetWidth; // trigger reflow
+        overlay.classList.remove('opacity-0');
+        content.classList.remove('scale-95', 'opacity-0');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('delete-photo-modal');
+        const overlay = document.getElementById('delete-photo-overlay');
+        const content = document.getElementById('delete-photo-content');
+
+        overlay.classList.add('opacity-0');
+        content.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        deleteAction = null;
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+        if (typeof deleteAction === 'function') {
+            deleteAction(); 
+        }
+        closeDeleteModal();
+    });
+
+    document.getElementById('delete-photo-overlay').addEventListener('click', closeDeleteModal);
+
+    // Fungsi Utama Penghapusan Gambar (Dipanggil via Modal)
     function removeFeaturedImage() {
-        if(confirm('Hapus foto utama ini?')) {
+        openDeleteModal(function() {
             document.getElementById('featured-image-preview').style.display = 'none';
             document.getElementById('delete_featured_image').value = '1';
-        }
+        });
     }
 
     function removeGalleryImage(path, elementId) {
-        if(confirm('Hapus foto ini dari galeri?')) {
+        openDeleteModal(function() {
             document.getElementById(elementId).style.display = 'none';
+            
+            // Tambahkan input hidden untuk memberi tahu Controller bahwa file ini dihapus
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'delete_gallery[]';
             input.value = path;
             document.getElementById('deleted-gallery-inputs').appendChild(input);
-        }
+        });
     }
 
+    // Fungsi Pembantu Form Lainnya
     function toggleClearBtn(inputId, btnId) {
         const input = document.getElementById(inputId);
         const btn = document.getElementById(btnId);
-        if(input.files.length > 0) {
+        if(input.files && input.files.length > 0) {
             btn.classList.remove('hidden');
         } else {
             btn.classList.add('hidden');
