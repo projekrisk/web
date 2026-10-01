@@ -140,6 +140,27 @@
     </div>
 </form>
 
+<!-- Modal Hapus Foto (Baru Ditambahkan) -->
+<div id="delete-photo-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
+    <div id="delete-photo-overlay" class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+    <div id="delete-photo-content" class="relative bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
+        <div class="w-16 h-16 mx-auto bg-red-100 dark:bg-red-500/20 text-brand-danger rounded-full flex items-center justify-center text-3xl mb-4">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Hapus Sampul?</h3>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Foto akan dihapus dari tampilan. Anda harus mengklik <strong>Perbarui Artikel</strong> untuk menyimpannya ke database secara permanen.</p>
+        
+        <div class="flex gap-3">
+            <button type="button" onclick="closeDeleteModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-900 dark:text-white font-medium py-2.5 rounded-lg transition-colors">
+                Batal
+            </button>
+            <button type="button" id="confirm-delete-btn" class="flex-1 bg-brand-danger hover:bg-red-600 text-white font-medium py-2.5 rounded-lg transition-colors">
+                Ya, Hapus
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="validation-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
     <div id="validation-overlay" class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
     <div id="validation-content" class="relative bg-white dark:bg-slate-800 w-full max-w-sm rounded-2xl p-6 text-center shadow-2xl transform scale-95 opacity-0 transition-all duration-300">
@@ -156,12 +177,48 @@
 
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
+    // --- LOGIKA MODAL HAPUS FOTO ---
+    let deleteAction = null; 
+
+    function openDeleteModal(actionCallback) {
+        deleteAction = actionCallback;
+        const modal = document.getElementById('delete-photo-modal');
+        const overlay = document.getElementById('delete-photo-overlay');
+        const content = document.getElementById('delete-photo-content');
+
+        modal.classList.remove('hidden'); modal.classList.add('flex');
+        void modal.offsetWidth; 
+        overlay.classList.remove('opacity-0');
+        content.classList.remove('scale-95', 'opacity-0');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('delete-photo-modal');
+        const overlay = document.getElementById('delete-photo-overlay');
+        const content = document.getElementById('delete-photo-content');
+
+        overlay.classList.add('opacity-0');
+        content.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 300);
+        deleteAction = null;
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', function() {
+        if (typeof deleteAction === 'function') {
+            deleteAction(); 
+        }
+        closeDeleteModal();
+    });
+
+    document.getElementById('delete-photo-overlay').addEventListener('click', closeDeleteModal);
+
     function removeFeaturedImage() {
-        if(confirm('Hapus foto utama ini?')) {
+        openDeleteModal(function() {
             document.getElementById('featured-image-preview').style.display = 'none';
             document.getElementById('delete_featured_image').value = '1';
-        }
+        });
     }
+    // ---------------------------------
 
     function toggleClearBtn(inputId, btnId) {
         const input = document.getElementById(inputId);
