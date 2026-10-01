@@ -57,7 +57,7 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3">
-                            @forelse($categories as$category)
+                            @forelse ($categories as$category)
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="category" value="{{ $category->name }}" class="peer sr-only" required {{ old('category', $product->category) ==$category->name ? 'checked' : '' }}>
                                 <div class="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-gray-100 peer-checked:border-brand-primary peer-checked:bg-blue-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:peer-checked:bg-brand-primary/20 dark:peer-checked:border-brand-primary transition-all flex items-center justify-center gap-2">
@@ -151,13 +151,11 @@
                     <div>
                         <label for="gallery" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Galeri Tambahan</label>
                         
-                        <!-- Penampung Input untuk foto galeri yang akan dihapus -->
                         <div id="deleted-gallery-inputs"></div>
 
-                        <!-- Menampilkan Foto Galeri Lama Jika Ada -->
                         @if($product->gallery && is_array($product->gallery) && count($product->gallery) > 0)
                             <div class="grid grid-cols-3 gap-2 mb-3">
-                                @foreach($product->gallery as $index =>$img)
+                                @foreach ($product->gallery as $index =>$img)
                                     <div class="relative w-full aspect-square group" id="gallery-preview-{{ $index }}">
                                         <img src="{{ asset('uploads/' . $img) }}" class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-slate-700">
                                         <button type="button" onclick="removeGalleryImage('{{ $img }}', 'gallery-preview-{{$index }}')" class="absolute top-1 right-1 bg-red-500/90 hover:bg-red-600 text-white w-6 h-6 rounded flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus dari Galeri">
