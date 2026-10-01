@@ -17,7 +17,7 @@
         <p class="font-medium text-red-800 dark:text-red-300">Terdapat kesalahan pada input Anda:</p>
     </div>
     <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400">
-        @foreach ($errors->all() as$error)
+        @foreach ($errors->all() as $error)
             <li>{{ $error }}</li>
         @endforeach
     </ul>
@@ -57,7 +57,7 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3">
-                            @forelse ($categories as$category)
+                            @forelse ($categories as $category)
                             <label class="cursor-pointer relative">
                                 <input type="radio" name="category" value="{{ $category->name }}" class="peer sr-only" required {{ old('category', $product->category) ==$category->name ? 'checked' : '' }}>
                                 <div class="rounded-full border border-gray-200 bg-gray-50 px-4 py-2 hover:bg-gray-100 peer-checked:border-brand-primary peer-checked:bg-blue-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 dark:peer-checked:bg-brand-primary/20 dark:peer-checked:border-brand-primary transition-all flex items-center justify-center gap-2">
