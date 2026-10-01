@@ -29,17 +29,15 @@
     @method('PUT') 
     
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- KOLOM KIRI -->
         <div class="lg:col-span-2 space-y-6">
             
-            <!-- INFO DASAR -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Informasi Dasar</h2>
                 
                 <div class="space-y-4">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Produk <span class="text-red-500">*</span></label>
-                        <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                        <input type="text" id="name" name="name" value="{{ old('name', $product->name) }}" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">
                     </div>
                     
                     <div>
@@ -48,7 +46,7 @@
                             <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800 text-gray-500 text-sm">
                                 domain.com/produk/
                             </span>
-                            <input type="text" id="slug" name="slug" value="{{ old('slug', $product->slug) }}" required class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-r-lg focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                            <input type="text" id="slug" name="slug" value="{{ old('slug', $product->slug) }}" required class="flex-1 min-w-0 block w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-r-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">
                         </div>
                     </div>
 
@@ -77,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- DESKRIPSI -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Deskripsi Produk <span class="text-red-500">*</span></h2>
                 <div class="text-gray-900">
@@ -85,16 +82,14 @@
                 </div>
             </div>
             
-            <!-- SEO -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Optimasi SEO</h2>
                 <div>
                     <label for="meta_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Meta Deskripsi (Maks 160 Karakter)</label>
-                    <textarea id="meta_description" name="meta_description" rows="3" class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">{{ old('meta_description', $product->meta_description) }}</textarea>
+                    <textarea id="meta_description" name="meta_description" rows="3" class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">{{ old('meta_description', $product->meta_description) }}</textarea>
                 </div>
             </div>
 
-            <!-- AKSES DOWNLOAD -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Akses Download</h2>
                 <div class="mb-4">
@@ -129,14 +124,11 @@
             </div>
         </div>
 
-        <!-- KOLOM KANAN -->
         <div class="space-y-6">
             
-            <!-- MEDIA FOTO -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Media Foto</h2>
                 <div class="space-y-4">
-                    <!-- FOTO UTAMA -->
                     <div>
                         <label for="featured_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Foto Utama</label>
                         @if($product->featured_image)
@@ -156,7 +148,6 @@
                     
                     <hr class="border-gray-100 dark:border-slate-700">
                     
-                    <!-- GALERI TAMBAHAN -->
                     <div>
                         <label for="gallery" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Galeri Tambahan</label>
                         
@@ -184,32 +175,29 @@
                 </div>
             </div>
 
-            <!-- HARGA -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Harga & Diskon</h2>
                 <div class="space-y-4">
                     <div>
                         <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Harga Jual (Rp) <span class="text-red-500">*</span></label>
-                        <input type="number" id="price" name="price" value="{{ old('price', (int)$product->price) }}" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                        <input type="number" id="price" name="price" value="{{ old('price', (int)$product->price) }}" required class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">
                     </div>
                     <div>
                         <label for="strike_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Harga Coret / Asli (Rp)</label>
-                        <input type="number" id="strike_price" name="strike_price" value="{{ old('strike_price', (int)$product->strike_price) }}" class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                        <input type="number" id="strike_price" name="strike_price" value="{{ old('strike_price', (int)$product->strike_price) }}" class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">
                     </div>
                 </div>
             </div>
 
-            <!-- DEMO -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Link Demo</h2>
                 <div>
                     <label for="demo_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL Youtube / Web Demo (Opsional)</label>
-                    <input type="url" id="demo_url" name="demo_url" value="{{ old('demo_url', $product->demo_url) }}" placeholder="https://..." class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary outline-none transition-all">
+                    <input type="url" id="demo_url" name="demo_url" value="{{ old('demo_url', $product->demo_url) }}" placeholder="https://..." class="w-full bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all">
                     <p class="text-[11px] text-gray-500 mt-1">Kosongkan jika produk ini tidak memiliki video atau link live demo.</p>
                 </div>
             </div>
 
-            <!-- PUBLIKASI -->
             <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/50 p-6 sticky top-24">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Publikasi</h2>
                 
