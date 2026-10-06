@@ -3,43 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekrisk - Software Web, Desktop & Android Premium</title>
     
-    @php
-        $defaultTitle = "Projekrisk - Software Web, Desktop & Android Premium";
-        $pageTitle = request('search') ? 'Hasil Pencarian: ' . request('search') . ' - Projekrisk' : $defaultTitle;
-        $metaDescription = "Projekrisk menyediakan berbagai source code, template, dan aplikasi berbasis Web, Desktop, dan Android premium berkualitas tinggi untuk mempercepat proyek dan bisnis Anda.";
-        $currentUrl = request('search') ? url()->full() : url()->current();
-        $metaImage = asset('og-image.png');
-    @endphp
-
-    <title>{{ $pageTitle }}</title>
-    <meta name="description" content="{{ $metaDescription }}">
-    <meta name="keywords" content="source code premium, aplikasi web, software desktop, aplikasi android, source code sistem kasir, hris, e-commerce, download source code, projekrisk">
-    <meta name="author" content="Projekrisk">
-    <link rel="canonical" href="{{ url()->current() }}">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ $currentUrl }}">
-    <meta property="og:title" content="{{ $pageTitle }}">
-    <meta property="og:description" content="{{ $metaDescription }}">
-    <meta property="og:image" content="{{ $metaImage }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="{{ parse_url(url('/'), PHP_URL_HOST) }}">
-    <meta property="twitter:url" content="{{ $currentUrl }}">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $metaDescription }}">
-    <meta name="twitter:image" content="{{ $metaImage }}">
-
     <link rel="icon" type="image/png" href="{{ asset('icon.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap](https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -47,11 +19,11 @@
                 extend: {
                     fontFamily: { sans: ['"Roboto"', 'sans-serif'] },
                     colors: {
-                        brand: { dark: '#151A22', primary: '#3B82F6', primaryHover: '#2563EB', accent: '#10B981' }
+                        brand: { dark: '#151A22', primary: '#3B82F6', primaryHover: '#2563EB', accent: '#10B981', success: '#10B981' }
                     }
                 }
             }
-        };
+        }
     </script>
 
     <style>
@@ -76,6 +48,7 @@
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 overflow-x-hidden">
 
+    <!-- FULL SCREEN SEARCH MODAL -->
     <div id="search-modal" class="fixed inset-0 z-[100] bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md flex flex-col">
         <div class="flex justify-end p-6 md:p-8">
             <button id="close-search-btn" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-500 transition-colors w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
@@ -95,7 +68,10 @@
         </div>
     </div>
 
+    <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900/60 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+    
+    <!-- Mobile Sidebar Menu -->
     <aside id="mobile-sidebar" class="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-gray-900 z-[70] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col border-l border-gray-200 dark:border-gray-800">
         <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
             <div class="flex items-center gap-2">
@@ -124,9 +100,10 @@
         </div>
     </aside>
 
+    <!-- Header / Navbar Utama -->
     <div class="bg-white dark:bg-brand-dark text-gray-900 dark:text-white relative z-20 transition-colors duration-300">
         <header class="fixed w-full top-0 z-50 glass-nav bg-white/80 dark:bg-brand-dark/85 border-b border-gray-200 dark:border-white/5 transition-all duration-300" id="navbar">
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20">
                     
                     <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
@@ -143,7 +120,6 @@
                         </nav>
 
                         <div class="flex items-center gap-4 border-l border-gray-300 dark:border-gray-700 pl-6">
-                            
                             <button class="open-search-modal text-gray-500 hover:text-brand-primary dark:text-gray-400 dark:hover:text-brand-primary transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-blue-50 dark:hover:bg-gray-800" aria-label="Search">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
@@ -178,16 +154,19 @@
             </div>
         </header>
 
+        <!-- AREA HERO -->
         @if(!request('search'))
         <section class="h-[100svh] min-h-[650px] w-full relative flex items-center justify-center pt-20 overflow-hidden">
-            
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                 <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[80px]"></div>
                 <div class="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-brand-accent/10 rounded-full blur-[80px]"></div>
             </div>
 
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center w-full">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center w-full">
                 <div class="w-full space-y-6 flex flex-col items-center">
+                    <span class="inline-block py-1.5 px-4 rounded-full bg-blue-50 dark:bg-blue-500/10 text-brand-primary dark:text-blue-400 font-bold text-sm mb-2 border border-blue-100 dark:border-blue-500/20">
+                        🚀 Inovasi Digital Terbaik
+                    </span>
                     
                     <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 dark:text-white leading-[1.1] tracking-tight max-w-4xl">
                         Solusi Digital untuk <br class="hidden sm:block" />
@@ -210,11 +189,9 @@
                 </div>
             </div>
             
-            <div class="absolute bottom-10 left-0 w-full flex justify-center z-20 pointer-events-none">
-                <div class="animate-bounce flex flex-col items-center gap-2 opacity-50">
-                    <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest pl-1">Scroll</span>
-                    <i class="fa-solid fa-arrow-down text-gray-400"></i>
-                </div>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex flex-col items-center gap-2 opacity-50 z-20">
+                <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Scroll</span>
+                <i class="fa-solid fa-arrow-down text-gray-400"></i>
             </div>
         </section>
         @else
@@ -229,78 +206,91 @@
         @endif
     </div>
 
+    <!-- KONTEN UTAMA -->
     <main>
+        <!-- Katalog Produk -->
         <section id="produk" class="py-24 bg-slate-100 dark:bg-slate-800 transition-colors duration-300 scroll-mt-10">
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     @if(request('search'))
                         <h2 class="text-brand-primary font-bold tracking-widest uppercase text-sm mb-3">Katalog Produk</h2>
-                        <h3 class="text-2xl md:text-3xl font-normal text-gray-900 dark:text-white mb-4">Ditemukan {{ count($products) }} Produk</h3>
+                        <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Ditemukan {{ $products->count() }} Produk</h3>
                     @else
                         <h2 class="text-brand-primary font-bold tracking-widest uppercase text-sm mb-3">Katalog Premium</h2>
-                        <h3 class="text-2xl md:text-3xl font-normal text-gray-900 dark:text-white mb-4">Produk Pilihan Kami</h3>
+                        <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Produk Pilihan Kami</h3>
                         <p class="text-gray-600 dark:text-gray-400 text-lg">Berbagai source code dan aplikasi siap pakai yang dirancang untuk mempercepat pertumbuhan bisnis Anda.</p>
                     @endif
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <?php if(count($products) > 0): ?>
-                        <?php foreach($products as $product): ?>
-                        <div class="bg-white dark:bg-slate-700/50 rounded-2xl overflow-hidden shadow-sm border border-gray-200/80 dark:border-slate-600/50 flex flex-col card-hover">
-                            <div class="relative aspect-video">
-                                @if($product->featured_image)
-                                    <img src="{{ asset('uploads/' . $product->featured_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400">
-                                        <i class="fa-solid fa-image text-5xl"></i>
-                                    </div>
-                                @endif
-                                <a href="{{ route('front.products', ['category' => $product->category]) }}" class="absolute top-4 left-4 bg-brand-primary hover:bg-brand-primaryHover text-white text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wider shadow-sm transition-colors z-10" title="Filter by {{ $product->category }}">
-                                    {{ $product->category }}
-                                </a>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col">
-                                <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-brand-primary transition-colors cursor-pointer">
-                                    <a href="{{ url('/produk/'.$product->slug) }}">{{ $product->name }}</a>
-                                </h4>
+                    @forelse($products as $product)
+                    <div class="bg-white dark:bg-slate-700/50 rounded-2xl overflow-hidden shadow-sm border border-gray-200/80 dark:border-slate-600/50 flex flex-col card-hover">
+                        <div class="relative aspect-video">
+                            @if($product->featured_image)
+                                <img src="{{ asset('uploads/' . $product->featured_image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400">
+                                    <i class="fa-solid fa-image text-5xl"></i>
+                                </div>
+                            @endif
+                            <span class="absolute top-4 left-4 bg-brand-primary text-white text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wider shadow-sm">{{ $product->category }}</span>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-brand-primary transition-colors cursor-pointer">
+                                <a href="{{ url('/produk/'.$product->slug) }}">{{ $product->name }}</a>
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 line-clamp-3 flex-1 leading-relaxed">{{ $product->meta_description ?? Str::limit(strip_tags($product->description), 120) }}</p>
+                            
+                            <div class="mt-auto pt-5 border-t border-gray-100 dark:border-slate-600/50">
                                 
-                                <div class="mt-auto pt-5 border-t border-gray-100 dark:border-slate-600/50">
-                                    <div class="flex flex-wrap items-end gap-2 mb-5">
-                                        <span class="text-brand-primary font-normal text-2xl">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                                        @if($product->strike_price)
-                                            <span class="text-gray-400 dark:text-gray-500 line-through text-sm mb-1">Rp {{ number_format($product->strike_price, 0, ',', '.') }}</span>
-                                        @endif
-                                    </div>
-                                    <div class="flex gap-3">
+                                <!-- HARGA PRODUK (DENGAN LOGIKA GRATIS) -->
+                                <div class="flex flex-wrap items-end gap-2 mb-5">
+                                    @if($product->price == 0)
+                                        <span class="text-brand-success font-black text-2xl uppercase tracking-widest bg-green-100 dark:bg-green-500/10 px-3 py-1 rounded-lg">GRATIS</span>
+                                    @else
+                                        <span class="text-brand-primary font-black text-2xl">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                    @endif
+                                    
+                                    @if($product->strike_price)
+                                        <span class="text-gray-400 dark:text-gray-500 line-through text-sm mb-1">Rp {{ number_format($product->strike_price, 0, ',', '.') }}</span>
+                                    @endif
+                                </div>
+                                
+                                <!-- TOMBOL BELI (DENGAN LOGIKA GRATIS) -->
+                                <div class="flex gap-3">
+                                    @if($product->price == 0)
+                                        <a href="{{ route('front.checkout', $product->slug) }}" class="flex-1 bg-brand-success hover:bg-green-600 text-white text-sm font-bold py-2.5 rounded-xl transition-colors text-center shadow-md shadow-green-500/20">Ambil Gratis</a>
+                                    @else
                                         <a href="{{ route('front.checkout', $product->slug) }}" class="flex-1 bg-brand-primary hover:bg-brand-primaryHover text-white text-sm font-bold py-2.5 rounded-xl transition-colors text-center shadow-md shadow-blue-500/20">Beli</a>
-                                        <a href="{{ url('/produk/'.$product->slug) }}" class="flex-1 text-center bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-900 text-gray-900 dark:text-white text-sm font-bold py-2.5 rounded-xl transition-colors border border-gray-200 dark:border-slate-600">Detail</a>
-                                    </div>
+                                    @endif
+                                    
+                                    <a href="{{ url('/produk/'.$product->slug) }}" class="flex-1 text-center bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-900 text-gray-900 dark:text-white text-sm font-bold py-2.5 rounded-xl transition-colors border border-gray-200 dark:border-slate-600">Detail</a>
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-700/30 rounded-3xl border-2 border-dashed border-gray-200 dark:border-slate-600">
-                            <div class="w-20 h-20 bg-gray-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                                @if(request('search'))
-                                    <i class="fa-solid fa-magnifying-glass text-3xl text-gray-400"></i>
-                                @else
-                                    <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
-                                @endif
-                            </div>
-                            <h4 class="text-lg font-normal text-gray-900 dark:text-white mb-2">
-                                {{ request('search') ? 'Produk Tidak Ditemukan' : 'Katalog Masih Kosong' }}
-                            </h4>
-                            <p class="text-gray-500 text-sm">
-                                {{ request('search') ? 'Maaf, kami tidak menemukan produk dengan kata kunci tersebut.' : 'Admin belum menambahkan produk yang aktif.' }}
-                            </p>
+                    </div>
+                    @empty
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-700/30 rounded-3xl border-2 border-dashed border-gray-200 dark:border-slate-600">
+                        <div class="w-20 h-20 bg-gray-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                            @if(request('search'))
+                                <i class="fa-solid fa-magnifying-glass text-3xl text-gray-400"></i>
+                            @else
+                                <i class="fa-solid fa-box-open text-3xl text-gray-400"></i>
+                            @endif
                         </div>
-                    <?php endif; ?>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                            {{ request('search') ? 'Produk Tidak Ditemukan' : 'Katalog Masih Kosong' }}
+                        </h4>
+                        <p class="text-gray-500 text-sm">
+                            {{ request('search') ? 'Maaf, kami tidak menemukan produk dengan kata kunci tersebut.' : 'Admin belum menambahkan produk yang aktif.' }}
+                        </p>
+                    </div>
+                    @endforelse
                 </div>
                 
-                @if(!request('search') && count($products) > 0)
+                @if(!request('search') && $products->count() > 0)
                 <div class="mt-14 text-center">
-                    <a href="{{ route('front.products') }}" class="px-8 py-3.5 bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-brand-primary hover:text-brand-primary dark:hover:border-brand-primary dark:hover:text-brand-primary font-bold rounded-xl transition-all shadow-sm inline-flex items-center gap-2 group">
+                    <a href="{{ url('/products') }}" class="px-8 py-3.5 bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-brand-primary hover:text-brand-primary dark:hover:border-brand-primary dark:hover:text-brand-primary font-bold rounded-xl transition-all shadow-sm inline-flex items-center gap-2 group">
                         Lihat Semua Produk <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -310,29 +300,29 @@
 
         @if(!request('search'))
         <section id="fitur" class="py-24 bg-white dark:bg-brand-dark transition-colors duration-300">
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-brand-primary font-bold tracking-widest uppercase text-sm mb-3">Keunggulan Kami</h2>
-                    <h3 class="text-2xl md:text-3xl font-normal text-gray-900 dark:text-white mb-4">Mengapa Memilih Projekrisk?</h3>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Mengapa Memilih Projekrisk?</h3>
                     <p class="text-gray-600 dark:text-gray-400 text-lg">Kami memberikan ekosistem produk yang dapat diandalkan untuk menumbuhkan bisnis Anda tanpa pusing memikirkan masalah teknis.</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-gray-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm card-hover flex flex-col items-start text-left">
                         <div class="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-500/10 text-brand-primary flex items-center justify-center text-2xl mb-6 shadow-sm border border-blue-200 dark:border-blue-500/20"><i class="fa-solid fa-layer-group"></i></div>
-                        <h4 class="text-lg font-normal text-gray-900 dark:text-white mb-3">Kode Bersih & Terstruktur</h4>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Kode Bersih & Terstruktur</h4>
                         <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Arsitektur aplikasi dibangun dengan best-practice terkini, memudahkan kustomisasi atau pengembangan fitur lebih lanjut.</p>
                     </div>
                     
                     <div class="bg-gray-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm card-hover flex flex-col items-start text-left">
                         <div class="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-500/10 text-brand-accent flex items-center justify-center text-2xl mb-6 shadow-sm border border-green-200 dark:border-green-500/20"><i class="fa-solid fa-headset"></i></div>
-                        <h4 class="text-lg font-normal text-gray-900 dark:text-white mb-3">Dukungan Teknis Premium</h4>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Dukungan Teknis Premium</h4>
                         <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Tim ahli kami siap membantu Anda mulai dari proses instalasi, perbaikan bug minor, hingga konsultasi pengembangan.</p>
                     </div>
                     
                     <div class="bg-gray-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-gray-100 dark:border-slate-700/50 shadow-sm card-hover flex flex-col items-start text-left">
                         <div class="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mb-6 shadow-sm border border-purple-200 dark:border-purple-500/20"><i class="fa-solid fa-bolt"></i></div>
-                        <h4 class="text-lg font-normal text-gray-900 dark:text-white mb-3">Siap Pakai (Deployment)</h4>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Siap Pakai (Deployment)</h4>
                         <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">Hemat ratusan jam waktu development. Aplikasi kami telah melalui tahap QA dan siap di-deploy ke lingkungan production.</p>
                     </div>
                 </div>
@@ -345,159 +335,149 @@
                 <div class="absolute bottom-[-10%] left-[-5%] w-[300px] h-[300px] bg-white rounded-full blur-[100px]"></div>
             </div>
 
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <h2 class="text-blue-100 dark:text-brand-primary font-bold tracking-widest uppercase text-sm mb-3">Ulasan Nyata</h2>
-                    <h3 class="text-2xl md:text-3xl font-normal text-white mb-4">Apa Kata Pengguna Kami</h3>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Apa Kata Pengguna Kami</h3>
                 </div>
 
-                <?php if(isset($reviews) && count($reviews) > 0): ?>
-                <div class="relative group">
-                    <button id="slideLeft" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-6 w-12 h-12 bg-white dark:bg-slate-700 rounded-full shadow-2xl z-20 flex items-center justify-center text-brand-primary dark:text-white opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 hidden md:flex hover:scale-110">
-                        <i class="fa-solid fa-chevron-left text-lg"></i>
-                    </button>
-
-                    <div id="testimoni-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 no-scrollbar scroll-smooth">
-                        <?php foreach($reviews as $review): ?>
-                        <div class="snap-center shrink-0 w-[85vw] md:w-[400px] p-8 bg-white dark:bg-slate-700/80 rounded-3xl shadow-xl relative flex flex-col card-hover">
-                            <i class="fa-solid fa-quote-right text-4xl text-gray-100 dark:text-slate-600 absolute top-6 right-6"></i>
-                            
-                            <div class="flex text-yellow-400 text-sm mb-5 testimonial-stars">
-                                <?php for($i = 1; $i <= 5; $i++): ?>
-                                    <i class="fa-solid fa-star <?php echo $i <= $review->rating ? 'text-yellow-400' : 'text-gray-200 dark:text-slate-600'; ?>"></i>
-                                <?php endfor; ?>
-                            </div>
-                            
-                            <div class="mb-8 relative z-10 flex-1">
-                                <p class="text-gray-700 dark:text-gray-200 italic line-clamp-4 testimonial-text font-medium leading-relaxed">{{ $review->comment }}</p>
-                                <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
-                            </div>
-                            
-                            <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
-                                <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-slate-800 text-brand-primary flex items-center justify-center font-bold text-lg testimonial-img-placeholder border-2 border-blue-100 dark:border-slate-600 shrink-0">
-                                    {{ substr($review->user->name ?? 'U', 0, 1) }}
-                                </div>
-                                
-                                <div class="min-w-0">
-                                    <h5 class="text-gray-900 dark:text-white font-bold testimonial-author truncate">{{ $review->user->name ?? 'User Anonim' }}</h5>
-                                    <p class="text-gray-500 dark:text-gray-400 text-[11px] font-medium testimonial-role uppercase tracking-wider truncate">Produk: {{ $review->product->name ?? 'Dihapus' }}</p>
-                                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="p-8 bg-white dark:bg-slate-700/80 rounded-3xl shadow-xl relative flex flex-col h-full card-hover">
+                        <i class="fa-solid fa-quote-right text-4xl text-gray-100 dark:text-slate-600 absolute top-6 right-6"></i>
+                        <div class="flex text-yellow-400 text-sm mb-5 testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <div class="mb-8 relative z-10 flex-1">
+                            <p class="text-gray-700 dark:text-gray-200 italic line-clamp-4 testimonial-text font-medium leading-relaxed">"Source code HRIS dari Projekrisk sangat rapi dan mudah dimodifikasi. Tim dev kami berhasil mengintegrasikannya ke sistem internal hanya dalam waktu seminggu. Sangat direkomendasikan untuk skala enterprise."</p>
+                            <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
+                        </div>
+                        <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
+                            <img src="[https://placehold.co/100x100/3b82f6/ffffff?text=A](https://placehold.co/100x100/3b82f6/ffffff?text=A)" alt="Andi S." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-blue-100 dark:border-slate-600">
+                            <div>
+                                <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Andi Saputra</h5>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">CTO, TechIndo</p>
                             </div>
                         </div>
-                        <?php endforeach; ?>
                     </div>
 
-                    <button id="slideRight" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-6 w-12 h-12 bg-white dark:bg-slate-700 rounded-full shadow-2xl z-20 flex items-center justify-center text-brand-primary dark:text-white opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-0 hidden md:flex hover:scale-110">
-                        <i class="fa-solid fa-chevron-right text-lg"></i>
-                    </button>
-                </div>
-                
-                <?php if(count($reviews) > 1): ?>
-                <p class="text-white/60 text-center text-xs mt-2 md:hidden animate-pulse"><i class="fa-solid fa-arrows-left-right mr-1"></i> Geser untuk melihat lebih banyak</p>
-                <?php endif; ?>
+                    <div class="p-8 bg-white dark:bg-slate-700/80 rounded-3xl shadow-xl relative flex flex-col h-full card-hover">
+                        <i class="fa-solid fa-quote-right text-4xl text-gray-100 dark:text-slate-600 absolute top-6 right-6"></i>
+                        <div class="flex text-yellow-400 text-sm mb-5 testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <div class="mb-8 relative z-10 flex-1">
+                            <p class="text-gray-700 dark:text-gray-200 italic line-clamp-4 testimonial-text font-medium leading-relaxed">"Aplikasi Kasir POS-nya sangat stabil digunakan di 5 cabang restoran saya. Fitur laporan keuangannya akurat dan sangat membantu mengontrol omset harian lewat HP. Tim support sangat kooperatif."</p>
+                            <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
+                        </div>
+                        <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
+                            <img src="[https://placehold.co/100x100/10b981/ffffff?text=R](https://placehold.co/100x100/10b981/ffffff?text=R)" alt="Rina W." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-green-100 dark:border-slate-600">
+                            <div>
+                                <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Rina Wati</h5>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">Owner, Resto Bahari</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <?php else: ?>
-                <div class="text-center p-12 bg-white/10 rounded-3xl border border-white/20 backdrop-blur-sm max-w-2xl mx-auto">
-                    <i class="fa-regular fa-comment-dots text-5xl text-white/50 mb-4"></i>
-                    <p class="text-white/90 font-medium text-lg">Belum ada ulasan pengguna yang diterbitkan.</p>
-                    <p class="text-white/60 text-sm mt-2">Jadilah yang pertama mengulas setelah melakukan pembelian!</p>
+                    <div class="p-8 bg-white dark:bg-slate-700/80 rounded-3xl shadow-xl relative flex flex-col h-full card-hover sm:hidden lg:flex">
+                        <i class="fa-solid fa-quote-right text-4xl text-gray-100 dark:text-slate-600 absolute top-6 right-6"></i>
+                        <div class="flex text-yellow-400 text-sm mb-5 testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                        <div class="mb-8 relative z-10 flex-1">
+                            <p class="text-gray-700 dark:text-gray-200 italic line-clamp-4 testimonial-text font-medium leading-relaxed">"Produk digital di sini sangat worth the price. Dokumentasi jelas, dan proses transaksinya instan. Saya langsung bisa mendownload file tanpa harus menunggu lama."</p>
+                            <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
+                        </div>
+                        <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
+                            <img src="[https://placehold.co/100x100/f59e0b/ffffff?text=B](https://placehold.co/100x100/f59e0b/ffffff?text=B)" alt="Budi T." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-orange-100 dark:border-slate-600">
+                            <div>
+                                <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Budi Tomo</h5>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">Freelance Developer</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <?php endif; ?>
             </div>
         </section>
         @endif
 
         <section id="artikel" class="py-24 bg-gray-50 dark:bg-brand-dark transition-colors duration-300">
-            <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 mb-12 border-b border-gray-200 dark:border-gray-800 pb-6">
                     <div class="text-center md:text-left">
                         @if(request('search'))
                             <h2 class="text-brand-primary font-bold tracking-widest uppercase text-sm mb-2">Hasil Pencarian</h2>
-                            <h3 class="text-2xl md:text-3xl font-normal text-gray-900 dark:text-white">Ditemukan {{ count($articles) }} Artikel</h3>
+                            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Ditemukan {{ $articles->count() }} Artikel</h3>
                         @else
                             <h2 class="text-brand-primary font-bold tracking-widest uppercase text-sm mb-2">Wawasan & Update</h2>
-                            <h3 class="text-2xl md:text-3xl font-normal text-gray-900 dark:text-white">Artikel Terbaru</h3>
+                            <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">Artikel Terbaru</h3>
                         @endif
                     </div>
                     @if(!request('search'))
-                    <a href="{{ route('front.articles') }}" class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 font-bold hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
+                    <a href="{{ url('/articles') }}" class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 font-bold hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                         Lihat Semua Blog <i class="fa-solid fa-arrow-right text-sm"></i>
                     </a>
                     @endif
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <?php if(count($articles) > 0): ?>
-                        <?php foreach($articles as $article): ?>
-                        <article class="bg-white dark:bg-slate-700/50 rounded-2xl overflow-hidden shadow-sm border border-gray-200/80 dark:border-slate-600/50 flex flex-col card-hover">
-                            
-                            <div class="relative aspect-video overflow-hidden">
-                                @if($article->featured_image)
-                                    <img src="{{ asset('uploads/' . $article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
-                                @else
-                                    <div class="w-full h-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center text-gray-400">
-                                        <i class="fa-regular fa-image text-4xl"></i>
-                                    </div>
-                                @endif
-                                <a href="{{ route('front.articles', ['category' => $article->category]) }}" class="absolute top-4 left-4 bg-brand-primary hover:bg-brand-primaryHover text-white text-[10px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wider shadow-sm transition-colors z-10" title="Filter by {{ $article->category }}">
-                                    {{ $article->category }}
-                                </a>
-                            </div>
-                            
-                            <div class="p-6 flex-1 flex flex-col">
-                                <div class="flex items-center text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">
-                                    <i class="fa-regular fa-calendar mr-2"></i> {{ $article->created_at->format('d M Y') }}
+                    @forelse($articles as $article)
+                    <article class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm border border-gray-100 dark:border-slate-700/50 card-hover flex flex-col">
+                        <div class="relative aspect-[4/3] overflow-hidden">
+                            @if($article->featured_image)
+                                <img src="{{ asset('uploads/' . $article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+                            @else
+                                <div class="w-full h-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center text-gray-400">
+                                    <i class="fa-regular fa-image text-4xl"></i>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-900 dark:text-white leading-snug hover:text-brand-primary transition-colors line-clamp-2 mb-3 cursor-pointer">
-                                    <a href="{{ route('front.article', $article->slug) }}">{{ $article->title }}</a>
-                                </h4>
-                                
-                                <div class="mt-auto pt-5 border-t border-gray-100 dark:border-slate-600/50">
-                                    <a href="{{ route('front.article', $article->slug) }}" class="flex items-center justify-center gap-2 w-full bg-gray-50 hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-900 text-gray-900 dark:text-white text-sm font-bold py-2.5 rounded-xl transition-colors border border-gray-200 dark:border-slate-600">
-                                        Baca Selengkapnya <i class="fa-solid fa-arrow-right-long text-brand-primary"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-gray-200 dark:border-slate-700">
-                            <div class="w-16 h-16 mx-auto bg-gray-50 dark:bg-slate-900 rounded-full flex items-center justify-center mb-4">
-                                @if(request('search'))
-                                    <i class="fa-solid fa-magnifying-glass text-2xl text-gray-400"></i>
-                                @else
-                                    <i class="fa-regular fa-newspaper text-2xl text-gray-400"></i>
-                                @endif
-                            </div>
-                            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                                {{ request('search') ? 'Artikel Tidak Ditemukan' : 'Belum Ada Artikel' }}
-                            </h4>
-                            <p class="text-gray-500 text-sm">
-                                {{ request('search') ? 'Coba cari dengan kata kunci lain.' : 'Admin belum menulis artikel untuk dipublikasikan.' }}
-                            </p>
+                            @endif
+                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur text-gray-900 dark:text-white text-[10px] font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider shadow-sm">{{ $article->category }}</span>
                         </div>
-                    <?php endif; ?>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col">
+                            <div class="flex items-center text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">
+                                <i class="fa-regular fa-calendar mr-2"></i> {{ $article->created_at->format('d M Y') }}
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-900 dark:text-white leading-snug hover:text-brand-primary transition-colors line-clamp-2 mb-3 cursor-pointer">
+                                <a href="{{ route('front.article', $article->slug) }}">{{ $article->title }}</a>
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm flex-1 line-clamp-3 leading-relaxed mb-6">{{ $article->meta_description ?? Str::limit(strip_tags($article->content), 120) }}</p>
+                            <a href="{{ route('front.article', $article->slug) }}" class="inline-flex items-center gap-2 text-brand-primary font-bold text-sm hover:gap-3 transition-all mt-auto w-max">
+                                Baca Selengkapnya <i class="fa-solid fa-arrow-right-long"></i>
+                            </a>
+                        </div>
+                    </article>
+                    @empty
+                    <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-gray-200 dark:border-slate-700">
+                        <div class="w-16 h-16 mx-auto bg-gray-50 dark:bg-slate-900 rounded-full flex items-center justify-center mb-4">
+                            @if(request('search'))
+                                <i class="fa-solid fa-magnifying-glass text-2xl text-gray-400"></i>
+                            @else
+                                <i class="fa-regular fa-newspaper text-2xl text-gray-400"></i>
+                            @endif
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
+                            {{ request('search') ? 'Artikel Tidak Ditemukan' : 'Belum Ada Artikel' }}
+                        </h4>
+                        <p class="text-gray-500 text-sm">
+                            {{ request('search') ? 'Coba cari dengan kata kunci lain.' : 'Admin belum menulis artikel untuk dipublikasikan.' }}
+                        </p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="bg-gray-900 border-t border-gray-800 py-10 text-center md:text-left">
-        <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('icon.png') }}" alt="Projekrisk" class="w-8 h-8 opacity-80 grayscale hover:grayscale-0 transition-all">
                 <p class="text-gray-400 text-sm font-medium">
-                    &copy; {{ date('Y') }} Projekrisk.
+                    &copy; {{ date('Y') }} Projekrisk. Hak Cipta Dilindungi.
                 </p>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 font-medium">
-                <a href="{{ route('front.terms') }}" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
-                <a href="{{ route('front.privacy') }}" class="hover:text-white transition-colors">Kebijakan Privasi</a>
-                <a href="{{ route('front.contact') }}" class="hover:text-white transition-colors">Kontak Kami</a>
+                <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
+                <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-white transition-colors">Kontak Kami</a>
             </div>
         </div>
     </footer>
 
+    <!-- Modal Testimoni -->
     <div id="testimoni-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
         <div id="testimoni-overlay" class="absolute inset-0 bg-gray-900/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
         <div id="testimoni-content" class="relative bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl p-6 md:p-10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 border border-gray-100 dark:border-slate-700">
@@ -507,15 +487,16 @@
             <div id="modal-stars" class="flex text-yellow-400 text-lg mb-6"></div>
             <p id="modal-text" class="text-gray-700 dark:text-gray-200 italic mb-8 text-lg leading-relaxed font-medium"></p>
             <div class="flex items-center gap-4 border-t border-gray-100 dark:border-slate-700 pt-6">
-                <div id="modal-img-container" class="w-14 h-14 rounded-full bg-blue-100 dark:bg-slate-800 text-brand-primary flex items-center justify-center font-bold text-xl border-2 border-gray-100 dark:border-slate-600 shrink-0"></div>
+                <img id="modal-img" src="" alt="" class="w-14 h-14 rounded-full object-cover border-2 border-gray-100 dark:border-slate-600">
                 <div>
                     <h5 id="modal-author" class="text-gray-900 dark:text-white font-bold text-lg"></h5>
-                    <p id="modal-role" class="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mt-0.5"></p>
+                    <p id="modal-role" class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider"></p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Script Interaktif -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchModal = document.getElementById('search-modal');
@@ -622,14 +603,10 @@
                 window.addEventListener('resize', checkTruncation);
 
                 btn.addEventListener('click', function() {
-                    const card = this.closest('.card-hover');
-                    
+                    const card = this.closest('.p-8');
                     document.getElementById('modal-stars').innerHTML = card.querySelector('.testimonial-stars').innerHTML;
                     document.getElementById('modal-text').textContent = card.querySelector('.testimonial-text').textContent;
-                    
-                    const imgPlaceholder = card.querySelector('.testimonial-img-placeholder');
-                    document.getElementById('modal-img-container').textContent = imgPlaceholder.textContent.trim();
-
+                    document.getElementById('modal-img').src = card.querySelector('.testimonial-img').src;
                     document.getElementById('modal-author').textContent = card.querySelector('.testimonial-author').textContent;
                     document.getElementById('modal-role').textContent = card.querySelector('.testimonial-role').textContent;
 
@@ -656,29 +633,6 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !testimoniModal.classList.contains('hidden')) { closeTestimoniModal(); }
             });
-
-            const testContainer = document.getElementById('testimoni-container');
-            const slideLeft = document.getElementById('slideLeft');
-            const slideRight = document.getElementById('slideRight');
-
-            if(testContainer && slideLeft && slideRight) {
-                const cardWidth = 424; 
-                
-                slideRight.addEventListener('click', () => {
-                    testContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
-                });
-                
-                slideLeft.addEventListener('click', () => {
-                    testContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-                });
-                
-                testContainer.addEventListener('scroll', () => {
-                    slideLeft.disabled = testContainer.scrollLeft <= 0;
-                    slideRight.disabled = testContainer.scrollLeft + testContainer.clientWidth >= testContainer.scrollWidth - 5;
-                });
-                
-                testContainer.dispatchEvent(new Event('scroll'));
-            }
         });
     </script>
 </body>
