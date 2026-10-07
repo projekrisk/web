@@ -48,7 +48,6 @@
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 overflow-x-hidden">
 
-    <!-- FULL SCREEN SEARCH MODAL -->
     <div id="search-modal" class="fixed inset-0 z-[100] bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md flex flex-col">
         <div class="flex justify-end p-6 md:p-8">
             <button id="close-search-btn" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-500 transition-colors w-12 h-12 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
@@ -68,10 +67,8 @@
         </div>
     </div>
 
-    <!-- Mobile Sidebar Overlay -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900/60 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
     
-    <!-- Mobile Sidebar Menu -->
     <aside id="mobile-sidebar" class="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-gray-900 z-[70] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col border-l border-gray-200 dark:border-gray-800">
         <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
             <div class="flex items-center gap-2">
@@ -100,7 +97,6 @@
         </div>
     </aside>
 
-    <!-- Header / Navbar Utama -->
     <div class="bg-white dark:bg-brand-dark text-gray-900 dark:text-white relative z-20 transition-colors duration-300">
         <header class="fixed w-full top-0 z-50 glass-nav bg-white/80 dark:bg-brand-dark/85 border-b border-gray-200 dark:border-white/5 transition-all duration-300" id="navbar">
             <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -154,7 +150,6 @@
             </div>
         </header>
 
-        <!-- AREA HERO -->
         @if(!request('search'))
         <section class="h-[100svh] min-h-[650px] w-full relative flex items-center justify-center pt-20 overflow-hidden">
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -164,9 +159,6 @@
 
             <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center w-full">
                 <div class="w-full space-y-6 flex flex-col items-center">
-                    <span class="inline-block py-1.5 px-4 rounded-full bg-blue-50 dark:bg-blue-500/10 text-brand-primary dark:text-blue-400 font-bold text-sm mb-2 border border-blue-100 dark:border-blue-500/20">
-                        🚀 Inovasi Digital Terbaik
-                    </span>
                     
                     <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 dark:text-white leading-[1.1] tracking-tight max-w-4xl">
                         Solusi Digital untuk <br class="hidden sm:block" />
@@ -206,9 +198,7 @@
         @endif
     </div>
 
-    <!-- KONTEN UTAMA -->
     <main>
-        <!-- Katalog Produk -->
         <section id="produk" class="py-24 bg-slate-100 dark:bg-slate-800 transition-colors duration-300 scroll-mt-10">
             <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-16">
@@ -243,7 +233,6 @@
                             
                             <div class="mt-auto pt-5 border-t border-gray-100 dark:border-slate-600/50">
                                 
-                                <!-- HARGA PRODUK (DENGAN LOGIKA GRATIS) -->
                                 <div class="flex flex-wrap items-end gap-2 mb-5">
                                     @if($product->price == 0)
                                         <span class="text-brand-success font-black text-2xl uppercase tracking-widest bg-green-100 dark:bg-green-500/10 px-3 py-1 rounded-lg">GRATIS</span>
@@ -256,7 +245,6 @@
                                     @endif
                                 </div>
                                 
-                                <!-- TOMBOL BELI (DENGAN LOGIKA GRATIS) -->
                                 <div class="flex gap-3">
                                     @if($product->price == 0)
                                         <a href="{{ route('front.checkout', $product->slug) }}" class="flex-1 bg-brand-success hover:bg-green-600 text-white text-sm font-bold py-2.5 rounded-xl transition-colors text-center shadow-md shadow-green-500/20">Ambil Gratis</a>
@@ -350,7 +338,7 @@
                             <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
                         </div>
                         <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
-                            <img src="[https://placehold.co/100x100/3b82f6/ffffff?text=A](https://placehold.co/100x100/3b82f6/ffffff?text=A)" alt="Andi S." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-blue-100 dark:border-slate-600">
+                            <img src="https://placehold.co/100x100/3b82f6/ffffff?text=A" alt="Andi S." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-blue-100 dark:border-slate-600">
                             <div>
                                 <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Andi Saputra</h5>
                                 <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">CTO, TechIndo</p>
@@ -366,7 +354,7 @@
                             <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
                         </div>
                         <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
-                            <img src="[https://placehold.co/100x100/10b981/ffffff?text=R](https://placehold.co/100x100/10b981/ffffff?text=R)" alt="Rina W." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-green-100 dark:border-slate-600">
+                            <img src="https://placehold.co/100x100/10b981/ffffff?text=R" alt="Rina W." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-green-100 dark:border-slate-600">
                             <div>
                                 <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Rina Wati</h5>
                                 <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">Owner, Resto Bahari</p>
@@ -382,7 +370,7 @@
                             <button class="read-more-btn hidden text-brand-primary text-sm font-bold hover:underline mt-3 inline-flex items-center gap-1 focus:outline-none">Selengkapnya <i class="fa-solid fa-angle-down text-[10px]"></i></button>
                         </div>
                         <div class="flex items-center gap-4 mt-auto border-t border-gray-100 dark:border-slate-600/50 pt-5">
-                            <img src="[https://placehold.co/100x100/f59e0b/ffffff?text=B](https://placehold.co/100x100/f59e0b/ffffff?text=B)" alt="Budi T." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-orange-100 dark:border-slate-600">
+                            <img src="https://placehold.co/100x100/f59e0b/ffffff?text=B" alt="Budi T." class="w-12 h-12 rounded-full object-cover testimonial-img border-2 border-orange-100 dark:border-slate-600">
                             <div>
                                 <h5 class="text-gray-900 dark:text-white font-bold testimonial-author">Budi Tomo</h5>
                                 <p class="text-gray-500 dark:text-gray-400 text-xs font-medium testimonial-role uppercase tracking-wider">Freelance Developer</p>
@@ -462,22 +450,21 @@
     </main>
 
     <footer class="bg-gray-900 border-t border-gray-800 py-10 text-center md:text-left">
-        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('icon.png') }}" alt="Projekrisk" class="w-8 h-8 opacity-80 grayscale hover:grayscale-0 transition-all">
                 <p class="text-gray-400 text-sm font-medium">
-                    &copy; {{ date('Y') }} Projekrisk. Hak Cipta Dilindungi.
+                    &copy; {{ date('Y') }} Projekrisk.
                 </p>
             </div>
             <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 font-medium">
-                <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
-                <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
-                <a href="#" class="hover:text-white transition-colors">Kontak Kami</a>
+                <a href="{{ route('front.terms') }}" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
+                <a href="{{ route('front.privacy') }}" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                <a href="{{ route('front.contact') }}" class="hover:text-white transition-colors">Kontak Kami</a>
             </div>
         </div>
     </footer>
 
-    <!-- Modal Testimoni -->
     <div id="testimoni-modal" class="fixed inset-0 z-[100] hidden items-center justify-center px-4">
         <div id="testimoni-overlay" class="absolute inset-0 bg-gray-900/80 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
         <div id="testimoni-content" class="relative bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl p-6 md:p-10 shadow-2xl transform scale-95 opacity-0 transition-all duration-300 border border-gray-100 dark:border-slate-700">
@@ -496,7 +483,6 @@
         </div>
     </div>
 
-    <!-- Script Interaktif -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchModal = document.getElementById('search-modal');

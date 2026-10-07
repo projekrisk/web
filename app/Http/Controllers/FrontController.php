@@ -69,7 +69,8 @@ class FrontController extends Controller
     {
         $product = Product::where('slug',$slug)
             ->where('status', 'active')
-            ->with(['reviews' => function($q) {$q->where('status', 'approved')->with('user')->latest();
+            ->with(['reviews' => function($q) {
+                $q->where('status', 'approved')->with('user')->latest();
             }])
             ->firstOrFail();
 
@@ -82,7 +83,8 @@ class FrontController extends Controller
                             ->where('status', 'paid')
                             ->exists();
 
-            if ($hasPaid) {$canReview = true;
+            if ($hasPaid) {
+                $canReview = true;
                 $userReview = Review::where('user_id', Auth::id())
                                     ->where('product_id', $product->id)
                                     ->first();
@@ -92,7 +94,8 @@ class FrontController extends Controller
         $isYoutube = false;
         if ($product->demo_url) {
             $urlLower = strtolower($product->demo_url);
-            if (str_contains($urlLower, 'youtube.com') || str_contains($urlLower, 'youtu.be')) {$isYoutube = true;
+            if (str_contains($urlLower, 'youtube.com') || str_contains($urlLower, 'youtu.be')) {
+                $isYoutube = true;
             }
         }
 
@@ -131,8 +134,9 @@ class FrontController extends Controller
             } else {
                 $isSimilarSearch = true;
                 
-                $keywords = explode(' ', $search);$articleQuery->where(function($q) use ($keywords) {
-                    foreach ($keywords as$word) {
+                $keywords = explode(' ', $search);
+                $articleQuery->where(function($q) use ($keywords) {
+                    foreach ($keywords as $word) {
                         $cleanWord = trim($word);
                         if(strlen($cleanWord) > 2) { 
                             $q->orWhere('title', 'like', "%{$cleanWord}%")
@@ -141,20 +145,23 @@ class FrontController extends Controller
                     }
                 });
 
-                if ($articleQuery->count() == 0) {$articleQuery = Article::query()->where('status', 'published');
+                if ($articleQuery->count() == 0) {
+                    $articleQuery = Article::query()->where('status', 'published');
                     session()->flash('recommendation', true); 
                 }
             }
         }
 
-        $articles = $articleQuery->latest()->paginate(9)->withQueryString();$categories = Article::where('status', 'published')->select('category')->distinct()->pluck('category');
+        $articles = $articleQuery->latest()->paginate(9)->withQueryString();
+        $categories = Article::where('status', 'published')->select('category')->distinct()->pluck('category');
         
         return view('front.articles', compact('articles', 'search', 'category', 'categories', 'isSimilarSearch'));
     }
 
     public function showArticle($slug)
     {
-        $article = Article::where('slug', $slug)->where('status', 'published')->firstOrFail();$latest_articles = Article::where('status', 'published')
+        $article = Article::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $latest_articles = Article::where('status', 'published')
                                   ->where('id', '!=', $article->id)
                                   ->latest()
                                   ->take(4)
@@ -191,22 +198,49 @@ class FrontController extends Controller
 
     public function processCheckout(Request $request,$slug)
     {
-        $product = Product::where('slug', $slug)->where('status', 'active')->firstOrFail();$user = Auth::user();
+        $product = Product::where('slug', $slug)->where('status', 'active')->firstOrFail();
+        $user = Auth::user();
 
+        // Cek pesanan yang sudah ada
         $existingOrder = Order::where('user_id',$user->id)
                               ->where('product_id', $product->id)
                               ->whereIn('status', ['pending', 'paid'])
                               ->first();
 
         if ($existingOrder) {
+            // Jika sudah lunas (termasuk barang gratis), lempar langsung ke dasbor
+            if ($existingOrder->status == 'paid') {
+                return redirect()->route('dashboard')->with('info', 'Anda sudah memiliki akses ke produk ini.');
+            }
+            // Jika belum lunas, lempar ke invoice
             return redirect()->route('front.invoice', $existingOrder->order_number)
-                             ->with('info', 'Anda sudah memiliki tagihan atau sudah membeli produk ini.');
+                             ->with('info', 'Anda masih memiliki tagihan yang belum dibayar untuk produk ini.');
         }
 
         $orderNumber = 'INV-' . date('Ymd') . '-' . strtoupper(Str::random(6));
 
-        $kodeUnik =$product->price > 0 ? rand(111, 999) : 0;
-        $totalHargaPlusKode = $product->price +$kodeUnik;
+        // ==========================================================
+        // LOGIKA PRODUK GRATIS (LEAD MAGNET)
+        // ==========================================================
+        if ($product->price == 0) {
+            Order::create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'order_number' => $orderNumber,
+                'total_price' => 0,
+                'status' => 'paid', // LANGSUNG LUNAS
+            ]);
+
+            // Langsung arahkan ke Dashboard Member
+            return redirect()->route('dashboard')
+                             ->with('success', 'Produk gratis berhasil ditambahkan! Anda sekarang dapat mengaksesnya.');
+        }
+
+        // ==========================================================
+        // LOGIKA PRODUK BERBAYAR (NORMAL)
+        // ==========================================================
+        $kodeUnik = rand(111, 999);
+        $totalHargaPlusKode = $product->price + $kodeUnik;
 
         $order = Order::create([
             'user_id' => $user->id,
